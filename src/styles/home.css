@@ -1,0 +1,16 @@
+.home-container {
+    background-image: url('../assets/home1.jpg');
+    background-size: cover;
+    /* Adjusts the background image to cover the entire container */
+    background-position: center;
+    /* Centers the background image */
+    height: 100vh;
+    /* Sets the height of the container to the full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    /* Sets the text color to white for better readability */
+
+}
