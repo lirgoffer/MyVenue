@@ -7,7 +7,6 @@ import {
     MDBCard,
     MDBCardBody,
     MDBInput,
-    MDBCheckbox,
     MDBIcon
 }
     from 'mdb-react-ui-kit';
@@ -21,16 +20,12 @@ function Register() {
                 <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
 
                     <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 95%)' }}>
-                        The best offer <br />
-                        <span style={{ color: 'hsl(218, 81%, 75%)' }}>for your business</span>
+                        MyVenue<br />
+                        <span style={{ color: 'hsl(218, 81%, 75%)' }}>!הצטרפו אלינו</span>
                     </h1>
 
                     <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Eveniet, itaque accusantium odio, soluta, corrupti aliquam
-                        quibusdam tempora at cupiditate quis eum maiores libero
-                        veritatis? Dicta facilis sint aliquid ipsum atque?
-                    </p>
+                        הצטרפו אלינו ותוכלו לשתף את החוויות והביקורות שלכם, ובכך נוכל לעזור לאחרים לבחור את האולם האידיאלי עבורם. בין אם מחפשים את המקום המושלם לחתונה, אירוע חברה או כל מפגש אחר, הביקורות שלכם יעשירו את הקהילה שלנו ויעצימו משתמשים אחרים בחיפושם אחר האולם האידיאלי.                     </p>
 
                 </MDBCol>
 
@@ -44,22 +39,20 @@ function Register() {
 
                             <MDBRow>
                                 <MDBCol col='6'>
-                                    <MDBInput wrapperClass='mb-4' label='First name' id='form1' type='text' />
+                                    <MDBInput wrapperClass='mb-4' label='שם פרטי' id='form1' type='text' />
                                 </MDBCol>
 
                                 <MDBCol col='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Last name' id='form2' type='text' />
+                                    <MDBInput wrapperClass='mb-4' label='שם משפחה' id='form2' type='text' />
                                 </MDBCol>
                             </MDBRow>
 
-                            <MDBInput wrapperClass='mb-4' label='Email' id='form3' type='email' />
-                            <MDBInput wrapperClass='mb-4' label='Password' id='form4' type='password' />
+                            <MDBInput wrapperClass='mb-4' label='אימייל' id='form3' type='email' />
+                            <MDBInput wrapperClass='mb-4' label='סיסמא' id='form4' type='password' />
 
-                            <div className='d-flex justify-content-center mb-4'>
-                                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Subscribe to our newsletter' />
-                            </div>
 
-                            <MDBBtn className='w-100 mb-4' size='md'>sign up</MDBBtn>
+
+                            <MDBBtn className='w-100 mb-4' size='md'>הירשם</MDBBtn>
 
                             <div className="text-center">
 

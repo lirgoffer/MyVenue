@@ -20,12 +20,12 @@ function Login() {
                 <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
 
                     <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 95%)' }}>
-                        Welcome Back <br />
-                        <span style={{ color: 'hsl(218, 81%, 75%)' }}>to your account</span>
+                        MyVenue <br />
+                        <span style={{ color: 'hsl(218, 81%, 75%)' }}>!כיף שחזרתם אלינו</span>
                     </h1>
 
                     <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
-                        Sign in to access your account. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        התחברו חזרה לחשבונכם
                     </p>
 
                 </MDBCol>
@@ -38,20 +38,20 @@ function Login() {
                     <MDBCard className='my-5 bg-glass'>
                         <MDBCardBody className='p-5'>
 
-                            <MDBInput wrapperClass='mb-4' label='Email' id='form1' type='email' />
-                            <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' />
+                            <MDBInput wrapperClass='mb-4' label='אימייל' id='form1' type='email' />
+                            <MDBInput wrapperClass='mb-4' label='סיסמא' id='form2' type='password' />
 
                             <div className='d-flex justify-content-between align-items-center mb-4'>
                                 <div>
                                     <input name='rememberMe' type='checkbox' id='rememberMe' className='form-check-input' />
-                                    <label htmlFor='rememberMe' className='form-check-label'>Remember Me</label>
+                                    <label htmlFor='rememberMe' className='form-check-label'>זכור אותי</label>
                                 </div>
                                 <div>
-                                    <a href='/forgot-password'>Forgot Password?</a>
+                                    <a href='/forgot-password'>?שכחת סיסמא</a>
                                 </div>
                             </div>
 
-                            <MDBBtn className='w-100 mb-4' size='md'>Sign In</MDBBtn>
+                            <MDBBtn className='w-100 mb-4' size='md'>התחבר</MDBBtn>
 
                             <div className="text-center">
 
