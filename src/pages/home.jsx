@@ -1,5 +1,6 @@
 import React from "react";
-import "../styles/home.css"; // Importing a CSS file for styling
+import Button from 'react-bootstrap/Button';
+import "../styles/home.css";
 
 const Home = () => {
     return (
@@ -7,8 +8,8 @@ const Home = () => {
             <h1>MyVenue ברוכים הבאים ל</h1>
             <p>
                 .כאן תוכלו למצוא את אולם האירועים האידיאלי עבורכם
-
             </p>
+            <Button href='./venues' variant="outline-secondary">בואו נתחיל</Button>{' '}
         </div>
     );
 };
