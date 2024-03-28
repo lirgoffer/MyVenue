@@ -8,6 +8,8 @@ import About from "./pages/about"; // Correcting the import paths
 import Contact from "./pages/contact"; // Correcting the import paths
 import Login from "./pages/login"; // Correcting the import paths
 import Register from "./pages/register";
+import Venues from "./pages/venues";
+import './App.css';
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
       <CustomNavbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/venues" element={<Venues />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/register" element={<Register />} />

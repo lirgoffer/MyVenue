@@ -1,5 +1,5 @@
 .home-container {
-    background-image: url('../assets/home1.jpg');
+    background-image: url('../assets/home4.jpg');
     background-size: cover;
     /* Adjusts the background image to cover the entire container */
     background-position: center;
@@ -10,7 +10,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: black;
     /* Sets the text color to white for better readability */
 
 }

@@ -1,4 +1,3 @@
-// login.jsx
 import React from 'react';
 import {
     MDBBtn,
@@ -13,7 +12,7 @@ import {
 
 function Login() {
     return (
-        <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden' style={{ backgroundImage: "url('https://images.unsplash.com/photo-1551564874-2c247864797e?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3f')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+        <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden' style={{ backgroundImage: "url('https://images.unsplash.com/photo-1519750783826-e2420f4d687f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
 
             <MDBRow>
 
@@ -24,9 +23,6 @@ function Login() {
                         <span style={{ color: 'hsl(218, 81%, 75%)' }}>!כיף שחזרתם אלינו</span>
                     </h1>
 
-                    <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
-                        התחברו חזרה לחשבונכם
-                    </p>
 
                 </MDBCol>
 
