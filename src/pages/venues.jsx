@@ -97,11 +97,11 @@ function Venues() {
             moreDetails: "עוד פרטים",
             link: "#"
         },
-        // Add more venues data as needed
+
     ];
 
     return (
-        <div className="mt-4 mb-4">
+        <div className="mt-4 mb-4" dir="rtl">
             <Row xs={1} sm={2} md={3} lg={4} xl={5} className="g-4">
                 {venuesData.map((venue) => (
                     <Col key={venue.id}>

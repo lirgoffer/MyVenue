@@ -1,5 +1,6 @@
 import React from "react";
 
+
 import {
     MDBBtn,
     MDBContainer,
@@ -13,23 +14,22 @@ import {
 
 const Contact = () => {
     return (
-        <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden' style={{ backgroundImage: "url('https://images.unsplash.com/photo-1519750783826-e2420f4d687f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+        <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden' dir="rtl" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2hpdGUlMjAlMjBiYWNrZ3JvdW5kfGVufDB8fDB8fHww')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
 
             <MDBRow>
 
-                <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
+                <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center' dir="rtl" >
 
-                    <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 95%)' }}>
-                        MyVenue<br />
-                        <span style={{ color: 'hsl(218, 81%, 75%)' }}>בואו נעבוד יחד כדי לגרום לאירועים בלתי נשכחים לקרות</span>
-                    </h1>
+                    <h2 className="my-5 display-3 fw-bold ls-tight px-3" dir="rtl" style={{ color: 'hsl(218, 81%, 85%)' }}>
+                        <span>בואו נעבוד יחד כדי ליצור אירועים בלתי נשכחים</span>
+                    </h2>
 
-                    <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
+                    <p className='px-3' dir="rtl" style={{ color: 'hsl(218, 81%, 75%)' }}>
                         בעלי אולם אירועים ורוצים שאולמכם יופיעו באתרנו? ההצטרפות לפלטפורמה שלנו פותחת דלתות לקהל מגוון המחפש את המקום המושלם לאירוע שלו. על ידי רישום האולם שלך אצלנו, תוכל לקבל נראות והזדמנות להציג  ללקוחות פוטנציאליים המחפשים מקומות לאירועים. צור קשר איתנו עוד היום ואנחנו נחזור אלייך על מנת להכניס את אולמך לאתר.   </p>
 
                 </MDBCol>
 
-                <MDBCol md='6' className='position-relative'>
+                <MDBCol md='6' className='position-relative' dir="rtl">
 
                     <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
                     <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>

@@ -2,15 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
-
 const CustomNavbar = () => {
     return (
-        <Navbar collapseOnSelect expand="lg" bg="light" variant="light" >
+        <Navbar collapseOnSelect expand="lg" bg="light" variant="light" dir="rtl">
             <Container>
                 <Navbar.Brand as={Link} to="/">MyVenue</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto">
+                    <Nav className="me-auto text-right">
                         <Nav.Link as={Link} to="/">דף הבית</Nav.Link>
                         <Nav.Link as={Link} to="/venues">אולמות האירועים</Nav.Link>
                         <Nav.Link as={Link} to="/login">התחברות</Nav.Link>
