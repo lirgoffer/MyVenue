@@ -14,7 +14,7 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <CustomNavbar />
+      {/* <CustomNavbar /> */}
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/venues" element={<Venues />} />
