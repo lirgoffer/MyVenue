@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useContext,useEffect} from 'react';
 import {
     MDBBtn,
     MDBContainer,
@@ -9,74 +9,136 @@ import {
     MDBInput,
     MDBIcon
 } from 'mdb-react-ui-kit';
+import { TextField, Container, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import AllData from '../contexApi';
 
 function Register() {
+    
+    const navigate = useNavigate()
+    const {signUp} = useContext(AllData)
+
+    const [name,setName] = useState('')
+    const [maile,setMaile] = useState('')
+    const [password,setPassword] = useState('')
+    const [password2,setPassword2] = useState('')
+
+
+    // בןדק את הסיסמה
+    const containsLettersAndNumbers = (str) => {
+        return /[a-zA-Z]/.test(str) && /\d/.test(str);
+    }
+
+
+    const chackInfo = async () =>{
+        let userCheck = ''
+        if(name.length < 2){
+            alert('שם המשתמש לא תקין')
+        }
+        else if(maile.indexOf('@')== -1 || maile.length < 6){
+            alert('כתובת המייל לא תקינה ')
+        }
+        else if(containsLettersAndNumbers(password) == false || password.length < 6)(
+            alert('הסיסמה לא תקינה')
+        )
+        else if(password != password2)(
+            alert('הסיסמאות אינם שוות ')
+        )
+        else{
+            userCheck = await signUp(name,password,maile)
+            if(userCheck == false){
+                alert('המשתמש הזה כבר קיים במערכת')
+            }
+            else{
+                navigate('/venues')
+            }
+        }
+    }
+
+
+
     return (
         <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden' dir="rtl" style={{ backgroundImage: `url(${require('../assets/home4.jpg')})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
 
-            <MDBRow className='align-items-start' style={{ marginTop: '5cm' }}>
+            <MDBRow className='mainContanerLogIn' style={{ marginTop: '3cm' }}>
 
-                <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center' >
+                <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center' dir="rtl">
 
                     <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 95%)' }}>
-                        MyVenue<br />
-                        <span style={{ color: 'hsl(218, 81%, 75%)' }}>הצטרפו אלינו!</span>
+                        MyVenue <br />
+                        <span style={{ color: 'hsl(218, 81%, 75%)' }}>כיף שחזרתם אלינו!</span>
                     </h1>
 
-                    <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
-                        הצטרפו אלינו ותוכלו לשתף את החוויות והביקורות שלכם, ובכך נוכל לעזור לאחרים לבחור את האולם האידיאלי עבורם. בין אם מחפשים את המקום המושלם לחתונה, אירוע חברה או כל מפגש אחר, הביקורות שלכם יעשירו את הקהילה שלנו ויעצימו משתמשים אחרים בחיפושם אחר האולם האידיאלי.                     </p>
 
                 </MDBCol>
 
-                <MDBCol md='6' className='position-relative'>
 
-                    <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
-                    <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
 
-                    <MDBCard className='my-5 bg-glass'>
-                        <MDBCardBody className='p-5'>
+                    <div className='signInCo'>
+                        <h3 style={{marginRight:8}}>הרשמה</h3>
 
-                            <MDBRow>
-                                <MDBCol col='6'>
-                                    <MDBInput wrapperClass='mb-4' label='שם פרטי' id='form1' type='text' />
-                                </MDBCol>
+                        <TextField value={name}   onChange={(e) => setName(e.target.value)}  id="outlined-size-small" label="שם" variant="filled" inputProps={{ dir: 'rtl' }}
+                            sx={{
+                                '& .MuiInputLabel-root': {
+                                    left: 'auto',
+                                    right: 15,
+                                    transformOrigin: 'top right',
+                                },
+                                marginTop: 3
+                            }}
+                        />
 
-                                <MDBCol col='6'>
-                                    <MDBInput wrapperClass='mb-4' label='שם משפחה' id='form2' type='text' />
-                                </MDBCol>
-                            </MDBRow>
+                        <TextField value={maile} onChange={(e)=>{setMaile(e.target.value)}} id="outlined-size-small" label="הכנס מייל" variant="filled" inputProps={{ dir: 'rtl' }}
+                            sx={{
+                                '& .MuiInputLabel-root': {
+                                    left: 'auto',
+                                    right: 15,
+                                    transformOrigin: 'top right',
+                                },
+                                marginTop: 3
+                            }}
+                        />
+                    
+                    <div style={{display:'flex',justifyContent:'space-between',marginTop:8}}>
+                        <TextField value={password} onChange={(e)=>{setPassword(e.target.value)}} id="outlined-size-small" label="הכנס סיסמה" variant="standard" inputProps={{ dir: 'rtl' }}
+                            sx={{
+                                '& .MuiInputLabel-root': {
+                                    left: 'auto',
+                                    right: 15,
+                                    transformOrigin: 'top right',
+                                },
+                                width:'48%'
+                            }}
+                        />
 
-                            <MDBInput wrapperClass='mb-4' label='אימייל' id='form3' type='email' />
-                            <MDBInput wrapperClass='mb-4' label='סיסמא' id='form4' type='password' />
+                        <TextField value={password2} onChange={(e)=>{setPassword2(e.target.value)}} id="outlined-size-small" label="בדיקת סיסמה" variant="standard" inputProps={{ dir: 'rtl' }}
+                            sx={{
+                                '& .MuiInputLabel-root': {
+                                    left: 'auto',
+                                    right: 15,
+                                    transformOrigin: 'top right',
+                                },
+                                width:'48%'
+                            }}
+                        />
 
-                            <MDBBtn className='w-100 mb-4' size='md'>הירשם</MDBBtn>
+                    </div>
 
-                            <div className="text-center">
+                    <div style={{display:'flex',justifyContent:'space-around',padding:35}}>
+                        
+                        <Button variant="contained" color="success" onClick={chackInfo}>
+                            הרשמה
+                        </Button>
 
-                                <p>or sign up with:</p>
+                        <Button variant="contained" color="inherit" onClick={()=>{navigate('/login')}}>
+                            התחבר
+                        </Button>
 
-                                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon='facebook-f' size="sm" />
-                                </MDBBtn>
+                    </div>
 
-                                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon='twitter' size="sm" />
-                                </MDBBtn>
 
-                                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon='google' size="sm" />
-                                </MDBBtn>
+                    </div>
 
-                                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon='github' size="sm" />
-                                </MDBBtn>
-
-                            </div>
-
-                        </MDBCardBody>
-                    </MDBCard>
-
-                </MDBCol>
 
             </MDBRow>
 

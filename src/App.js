@@ -10,10 +10,14 @@ import Login from "./pages/login"; // Correcting the import paths
 import Register from "./pages/register";
 import Venues from "./pages/venues";
 import './App.css';
+import { Data } from "./contexApi";
+
+
 
 function App() {
   return (
     <Router>
+      <Data>
       <CustomNavbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
@@ -24,6 +28,7 @@ function App() {
         <Route path="/login" element={<Login />} />
       </Routes>
       <Footer />
+      </Data>
     </Router>
   );
 }

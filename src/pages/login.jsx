@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext,useState} from 'react';
 import {
     MDBBtn,
     MDBContainer,
@@ -9,12 +9,115 @@ import {
     MDBInput,
     MDBIcon
 } from 'mdb-react-ui-kit';
+import { TextField, Container, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import AllData from '../contexApi';
+import imgArrow from './images/arrow.png'
 
 function Login() {
+
+    const navigate = useNavigate()
+    const {logIn} = useContext(AllData)
+    const {sendCodeToUpdatePassword}= useContext(AllData)
+    const {checkCode}= useContext(AllData)
+    const {updatePsswordServer} = useContext(AllData)
+    const [maile,setMaile] = useState('')
+    const [password,setPassword] = useState('')
+    const [checkPassword, setCheckPassword] = useState('')
+    const [codeUser,setCodeUser] = useState('')
+    const [showGetPassword,setShowGetPassword] = useState(false)
+
+
+    // בןדק את הסיסמה
+    const containsLettersAndNumbers = (str) => {
+        return /[a-zA-Z]/.test(str) && /\d/.test(str);
+    }
+
+
+    const chackInfo = async () =>{
+        let userCheck = ''
+        if(maile.indexOf('@')== -1 || maile.length < 6){
+            alert('כתובת המייל לא תקינה ')
+        }
+        else if(containsLettersAndNumbers(password) == false || password.length < 6)(
+            alert('הסיסמה לא תקינה')
+        )
+        else{
+            userCheck = await logIn(password,maile)
+            if(userCheck == false){
+                alert('הנתונים שהזנת אינם תקינים')
+            }else{
+                navigate('/venues')
+            }
+        }
+    }
+
+    const checkMaileToUpdate = async ()=>{
+        if(maile.indexOf('@')== -1 || maile.length < 6){
+            alert('כתובת המייל לא תקינה ')
+        }
+        else{
+            let ret = await sendCodeToUpdatePassword(maile)
+            if(ret == true){
+                console.log('pp');
+                setShowGetPassword('2')
+                
+            }
+            else(
+                alert('המייל שהזנת לא תקין ')
+            )
+            console.log(ret);
+        }
+    }
+
+    const sendCode = async () =>{
+        let ret = ''
+        if(codeUser.length == 4){
+           ret = await checkCode(codeUser,maile)
+           if(ret == true){
+            setShowGetPassword('3')
+            setPassword('')
+           }
+           else{
+            alert('הקוד לא תקין')
+           }
+        }
+        else{
+            alert('לא הוכנס קוד תקין ')
+        }
+    }
+
+    const updatePassword = async ()=>{
+
+        let ret = ''
+        if(containsLettersAndNumbers(password) == false || password.length < 6){
+            alert('הסיסמה לא תקינה')
+        }
+        else if(password != checkPassword){
+            alert('הסיסמות אינם שוות')
+        }
+        else{
+          ret = await updatePsswordServer(password,maile,codeUser)
+        }
+
+        if(ret == true){
+            setShowGetPassword(false)
+            setPassword('')
+            setCheckPassword('')
+            setCodeUser('')
+            setMaile('')
+        }
+        else{
+            alert('משהו השתבש נסה שנית')
+        }
+        
+    }
+
+
     return (
         <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden' dir="rtl" style={{ backgroundImage: `url(${require('../assets/home4.jpg')})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
 
-            <MDBRow className='align-items-start' style={{ marginTop: '5cm' }}>
+            <MDBRow className='mainContanerLogIn' >
 
                 <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center' dir="rtl">
 
@@ -26,55 +129,142 @@ function Login() {
 
                 </MDBCol>
 
-                <MDBCol md='6' className='position-relative' dir="rtl">
 
-                    <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
-                    <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
 
-                    <MDBCard className='my-5 bg-glass'>
-                        <MDBCardBody className='p-5'>
+                  
+                {
+                    !showGetPassword ? (
 
-                            <MDBInput wrapperClass='mb-4' label='אימייל' id='form1' type='email' />
-                            <MDBInput wrapperClass='mb-4' label='סיסמא' id='form2' type='password' />
+                        <div className='signInCo'>
+                            <h3 style={{ marginRight: 8 }}>התחבר</h3>
+                            <TextField value={maile} onChange={(e) => { setMaile(e.target.value) }} id="outlined-size-small" label="הכנס מייל" variant="filled" inputProps={{ dir: 'rtl' }}
+                                sx={{
+                                    '& .MuiInputLabel-root': {
+                                        left: 'auto',
+                                        right: 15,
+                                        transformOrigin: 'top right',
+                                    },
+                                    marginTop: 3
+                                }}
+                            />
 
-                            <div className='d-flex justify-content-between align-items-center mb-4' dir="rtl">
-                                <div>
-                                    <input name='rememberMe' type='checkbox' id='rememberMe' className='form-check-input' />
-                                    <label htmlFor='rememberMe' className='form-check-label'>זכור אותי</label>
-                                </div>
-                                <div>
-                                    <a href='/forgot-password'>שכחת סיסמא?</a>
-                                </div>
+                            <TextField value={password} onChange={(e) => { setPassword(e.target.value) }} id="outlined-size-small" label="הכנס סיסמה " variant="filled" inputProps={{ dir: 'rtl' }}
+                                sx={{
+                                    '& .MuiInputLabel-root': {
+                                        left: 'auto',
+                                        right: 15,
+                                        transformOrigin: 'top right',
+                                    },
+                                    marginTop: 8
+                                }}
+                            />
+                            <p onClick={() => { setShowGetPassword(true) }} style={{ color: 'rgb(68, 208, 255)', cursor: 'pointer' }}>שכחתי סיסמה</p>
+
+                            <div style={{ display: 'flex', justifyContent: 'space-around', padding: 35 }}>
+
+                                <Button variant="contained" color="success" onClick={chackInfo}>
+                                    התחבר
+                                </Button>
+
+                                <Button variant="contained" color="inherit" onClick={() => { navigate('/register') }}>
+                                    הרשמה
+                                </Button>
                             </div>
 
-                            <MDBBtn className='w-100 mb-4' size='md'>התחבר</MDBBtn>
 
-                            <div className="text-center">
+                        </div>
 
-                                <p>or sign in with:</p>
+                    ): showGetPassword == true ? (
+                            <div className='signInCo' style={{ height: 300 }}>
+                                <img onClick={() => { setShowGetPassword(false) }} className='imgBack' src={imgArrow} alt="back" />
+                                <h4 style={{ marginRight: 8, marginTop: 23 }}>שחזר סיסמה</h4>
+                                <TextField value={maile} onChange={(e) => { setMaile(e.target.value) }} id="outlined-size-small" label="הכנס מייל" variant="filled" inputProps={{ dir: 'rtl' }}
+                                    sx={{
+                                        '& .MuiInputLabel-root': {
+                                            left: 'auto',
+                                            right: 15,
+                                            transformOrigin: 'top right',
+                                        },
+                                        marginTop: 3
+                                    }}
+                                />
 
-                                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon='facebook-f' size="sm" />
-                                </MDBBtn>
+                                <div style={{ display: 'flex', justifyContent: 'space-around', padding: 35 }}>
 
-                                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon='twitter' size="sm" />
-                                </MDBBtn>
+                                    <Button variant="contained" color="success" onClick={checkMaileToUpdate}>
+                                        שלח
+                                    </Button>
 
-                                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon='google' size="sm" />
-                                </MDBBtn>
+                                </div>
 
-                                <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon='github' size="sm" />
-                                </MDBBtn>
 
                             </div>
+                    ) : showGetPassword == '2'  ? (
 
-                        </MDBCardBody>
-                    </MDBCard>
+                        <div className='signInCo' style={{ height: 300 }}>
+                        <img onClick={() => { setShowGetPassword(true) }} className='imgBack' src={imgArrow} alt="back" />
+                        <h4 style={{ marginRight: 8, marginTop: 23 }}>הכנס את הקוד</h4>
+                        <TextField value={codeUser} onChange={(e) => { setCodeUser(e.target.value) }} id="outlined-size-small" label="הכנס את הקוד" variant="filled" inputProps={{ dir: 'rtl' }}
+                            sx={{
+                                '& .MuiInputLabel-root': {
+                                    left: 'auto',
+                                    right: 15,
+                                    transformOrigin: 'top right',
+                                },
+                                marginTop: 3
+                            }}
+                        />
 
-                </MDBCol>
+                        <div style={{ display: 'flex', justifyContent: 'space-around', padding: 35 }}>
+
+                            <Button variant="contained" color="success" onClick={sendCode}>
+                                שלח
+                            </Button>
+
+                        </div>
+
+
+                    </div>
+                    ) :(
+                        
+                                    <div className='signInCo' style={{ height: 300 }}>
+                                        <img onClick={() => { setShowGetPassword(true) }} className='imgBack' src={imgArrow} alt="back" />
+                                        <h4 style={{ marginRight: 30, marginTop: 28 }}>הכנס סיסמה החדשה </h4>
+                                        <TextField value={password} onChange={(e) => { setPassword(e.target.value) }} id="outlined-size-small" label="הכנס סיסמה" variant="filled" inputProps={{ dir: 'rtl' }}
+                                            sx={{
+                                                '& .MuiInputLabel-root': {
+                                                    left: 'auto',
+                                                    right: 15,
+                                                    transformOrigin: 'top right',
+                                                },
+                                                marginTop: 3
+                                            }}
+                                        />
+
+                                        <TextField value={checkPassword} onChange={(e) => { setCheckPassword(e.target.value) }} id="outlined-size-small" label="הכנס סיסמה שוב" variant="filled" inputProps={{ dir: 'rtl' }}
+                                            sx={{
+                                                '& .MuiInputLabel-root': {
+                                                    left: 'auto',
+                                                    right: 15,
+                                                    transformOrigin: 'top right',
+                                                },
+                                                marginTop: 3
+                                            }}
+                                        />
+
+                                        <div style={{ display: 'flex', justifyContent: 'space-around', padding: 35 }}>
+
+                                            <Button variant="contained" color="success" onClick={updatePassword}>
+                                                עדכן סיסמה
+                                            </Button>
+
+                                        </div>
+
+
+                                    </div>
+
+                    )
+                }
 
             </MDBRow>
 
