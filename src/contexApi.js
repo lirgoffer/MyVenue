@@ -12,24 +12,23 @@ export const  Data = ({children})=>{
 
     const [user,setUser]= useState(null)
     const [allHall,setAllHall] = useState([])
+    const [arrShowHall,setArrShowHall] = useState([])
+    const [hallEditing,setHallEditing]  = useState({})
 
 
 
 
 // עידכון בתחילת הרצת האצר 
     const updateStart = ()=>{
-
-        console.log('ppp');
-
         let user = localStorage.getItem(KEYUSER)
-        // localStorage.removeItem(KEYUSER)
         setUser(user)
-
+        
         fetch(`${addresIp}/allHall`)
         .then(res=>res.json())
         .then(data=>{
             console.log(data);
             setAllHall(data)
+            setArrShowHall(data)
         })
         .catch(err=>{
             console.log(err);
@@ -183,6 +182,108 @@ export const  Data = ({children})=>{
         })
     }
 
+    const conectNew = async (mail,nameConect,lastName,phone)=>{
+        return await fetch(`${addresIp}/conectToAdmin`,{
+            headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
+            method:'POST',
+            body:JSON.stringify({
+                mail,
+                nameConect,
+                lastName,
+                phone
+            })
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            return data
+        })
+        .catch((e)=>{
+            console.log(e);
+        })
+    }
+
+    const addNewHall = async (nameHall,addersHall,cityHall,typeHall,descriptionHall,minNumberGuest,maxNumberGuest,kosher,maile,linkVidioFromYouTube,linkToWaze,imgUrl,linkToSite,userId)=>{
+        return await fetch(`${addresIp}/addNewHall`,{
+            headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
+            method:'POST',
+            body:JSON.stringify({
+                nameHall,
+                addersHall,
+                cityHall,
+                typeHall,
+                descriptionHall,
+                minNumberGuest,
+                maxNumberGuest,
+                kosher,
+                maile,
+                linkVidioFromYouTube,
+                linkToWaze,
+                imgUrl,
+                linkToSite,
+                userId
+            })
+        })
+        .then(res=>res.json())
+        .then((data)=>{
+            return data
+        })
+        .catch((e)=>{
+            console.log(e);
+        })
+    
+      
+    }
+
+    const deleteHall = async (IdVailu,userId)=>{
+        return await fetch(`${addresIp}/deleteHall`,{
+            headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
+            method:'POST',
+            body:JSON.stringify({
+                IdVailu,
+                userId
+            })
+        })
+        .then(res=>res.json())
+        .then((data)=>{
+            return data
+        })
+        .catch((e)=>{
+            console.log(e);
+        })
+    }
+
+    const aditingHall = async (nameHall,addersHall,cityHall,typeHall,descriptionHall,minNumberGuest,maxNumberGuest,kosher,maile,linkVidioFromYouTube,linkToWaze,imgUrl,linkToSite,userId,IdVailu)=>{
+        return await fetch(`${addresIp}/editingHall`,{
+            headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
+            method:'POST',
+            body:JSON.stringify({
+                nameHall,
+                addersHall,
+                cityHall,
+                typeHall,
+                descriptionHall,
+                minNumberGuest,
+                maxNumberGuest,
+                kosher,
+                maile,
+                linkVidioFromYouTube,
+                linkToWaze,
+                imgUrl,
+                linkToSite,
+                userId,
+                IdVailu
+            })
+        })
+        .then(res=>res.json())
+        .then((data)=>{
+            return data
+        })
+        .catch((e)=>{
+            console.log(e);
+        })
+    }
+
+
 
 
 
@@ -213,6 +314,7 @@ export const  Data = ({children})=>{
     })
    }
 
+
     useEffect(()=>{
         updateStart()
     },[])
@@ -224,7 +326,7 @@ export const  Data = ({children})=>{
 
 
     return(
-        <AllData.Provider value={{allHall,signUp,user,logIn,sendCodeToUpdatePassword,checkCode,updatePsswordServer,getComment,getNameComment,AddCommentServer}}>{children}</AllData.Provider>
+        <AllData.Provider value={{aditingHall,hallEditing,setHallEditing,deleteHall,addNewHall,conectNew,arrShowHall,setArrShowHall,allHall,signUp,user,logIn,sendCodeToUpdatePassword,checkCode,updatePsswordServer,getComment,getNameComment,AddCommentServer}}>{children}</AllData.Provider>
     )
 }
 

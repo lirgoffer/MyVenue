@@ -45,7 +45,8 @@ const schemaHall = new mongoose.Schema({
     maile: String,
     linkVidioFromYouTube: String,
     linkToWaze: String,
-    imgUrl: String
+    imgUrl: String,
+    linkToSite: String
 });
 
 const schemaUser = new mongoose.Schema({
@@ -57,7 +58,7 @@ const schemaUser = new mongoose.Schema({
     codePssword:String
 });
 
-const schemaOpinion = new mongoose.Schema({
+const schemaOpinion = new mongoose.Schema({ 
     IdOpinion: String,
     userId: String,
     rating: Number,
@@ -279,6 +280,135 @@ app.post('/addNewComment', async (req,res)=>{
     }
 
 })
+
+
+app.post('/conectToAdmin', async (req,res)=>{
+    let ret =  {
+        mail: req.body.mail,
+        nameConect: req.body.nameConect,
+        lastName:req.body.lastName,
+        phone:req.body.phone
+    }
+
+    let mailOptions = {
+        from: 'ranan97531@gmail.com',
+        to: 'ranan97531@gmail.com',
+        subject: 'לקוח חדש',
+        text: `שם : ${ret.nameConect} ${ret.lastName} \n פאלפון : ${ret.phone} \n מייל : ${ret.mail}`
+    };
+
+    try{
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+                res.json(false)
+            }
+            else {
+                console.log('Email sent: ' + info.response);
+                res.json(true)
+            }
+        });
+    }
+    catch{
+        res.json(false)
+    }
+
+
+
+})
+
+app.post('/addNewHall', async (req,res)=>{
+    let ret = {
+        IdVailu: generateUUID(),
+        nameHall: req.body.nameHall,
+        addersHall: req.body.addersHall,
+        cityHall: req.body.cityHall,
+        typeHall: req.body.typeHall,
+        descriptionHall: req.body.descriptionHall,
+        minNumberGuest: req.body.minNumberGuest,
+        maxNumberGuest: req.body.maxNumberGuest,
+        kosher: req.body.kosher,
+        maile: req.body.maile,
+        linkVidioFromYouTube: req.body.linkVidioFromYouTube,
+        linkToWaze: req.body.linkToWaze,
+        imgUrl: req.body.imgUrl,
+        linkToSite: req.body.linkToSite
+    }
+
+    let userIdCheck = req.body.userId
+
+    let checkUser = await collectionUser.findOne({userId:userIdCheck})
+    if(checkUser.Permissions == true){
+        try{
+            await collectionHall.insertMany(ret)
+            res.json(true)
+        }
+        catch{
+            res.json(false)
+        }
+    }
+    else{
+        res.json('למשתמש שלך אין הרשאה')
+    }
+})
+
+app.post('/deleteHall', async (req,res)=>{
+    let IdVailuCheck = req.body.IdVailu
+    let userIdCheck = req.body.userId
+
+    let checkUser = await collectionUser.findOne({userId:userIdCheck})
+    if(checkUser.Permissions == true){
+        try{
+            await collectionHall.deleteOne({IdVailu:IdVailuCheck})
+            res.json(true)
+        }
+        catch{
+            res.json(false)
+        }
+    }
+    else{
+        res.json('למשתמש שלך אין הרשאה')
+    }
+})
+
+app.post('/editingHall', async (req,res)=>{
+    let ret = {
+        nameHall: req.body.nameHall,
+        addersHall: req.body.addersHall,
+        cityHall: req.body.cityHall,
+        typeHall: req.body.typeHall,
+        descriptionHall: req.body.descriptionHall,
+        minNumberGuest: req.body.minNumberGuest,
+        maxNumberGuest: req.body.maxNumberGuest,
+        kosher: req.body.kosher,
+        maile: req.body.maile,
+        linkVidioFromYouTube: req.body.linkVidioFromYouTube,
+        linkToWaze: req.body.linkToWaze,
+        imgUrl: req.body.imgUrl,
+        linkToSite: req.body.linkToSite
+    }
+
+    let userIdCheck = req.body.userId
+    let IdVailuCheck = req.body.IdVailu
+
+    let checkUser = await collectionUser.findOne({userId:userIdCheck})
+    if(checkUser.Permissions == true){
+        try{
+            await collectionHall.updateOne({IdVailu:IdVailuCheck},{$set:{...ret}})
+            res.json(true)
+        }
+        catch{
+            res.json(false)
+        }
+    }
+    else{
+        res.json('אין לך הרשאות משתמש')
+    }
+
+})
+
+
 
 
 const addComment = async () => {

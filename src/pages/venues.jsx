@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import AllData from "../contexApi";
 import imgWaze from './images/waze.png'
 import HallShow from "./HallShow";
+import ListHall from "./ListHall";
 
 function Venues() {
     const {allHall}= useContext(AllData)
@@ -41,25 +42,9 @@ function Venues() {
                 {
                     showHall ? (
                             <HallShow val={hallCh} handleInnerClick={handleInnerClick} setShowHall={setShowHall}/>
-                    ): allHall.map((venue) => (
-                        <Card className="card2" onClick={()=>{setShowHall(true);setHallCh(venue)}}  >
-                            <Card.Img variant="top" src={venue.imgUrl} />
-                            <Card.Body>
-                                <Card.Title>{venue.nameHall}</Card.Title>
-                                <Card.Text>{venue.descriptionHall.slice(0, 100)}...</Card.Text>
-                            </Card.Body>
-                            <ListGroup className="list-group-flush">
-                                <ListGroup.Item>{venue.addersHall}</ListGroup.Item>
-                                {/* <ListGroup.Item>{venue.moreDetails}</ListGroup.Item> */}
-                            </ListGroup>
-                            <Card.Body dir="ltr">
-                                <a href={venue.linkToWaze}>
-                                <img src={imgWaze}/>
-                                </a>
-                                {/* <Card.Link href={venue.link}>קישור לעמוד המציג את האולם</Card.Link> */}
-                            </Card.Body>
-                        </Card>
-                ))
+                    ): (
+                        <ListHall setHallCh={setHallCh} setShowHall={setShowHall}/>
+                    )
 
                 }
 

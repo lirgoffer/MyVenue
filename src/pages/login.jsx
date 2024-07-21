@@ -121,7 +121,7 @@ function Login() {
 
                 <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center' dir="rtl">
 
-                    <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 95%)' }}>
+                    <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 75%)' }}>
                         MyVenue <br />
                         <span style={{ color: 'hsl(218, 81%, 75%)' }}>כיף שחזרתם אלינו!</span>
                     </h1>

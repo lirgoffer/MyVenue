@@ -15,15 +15,27 @@ export default function Comment({val}) {
 
   useEffect(()=>{
     const get = async ()=>{
-        let ret = await getNameComment(val.userId)
-        console.log(ret);
-        setNameUser(ret)
+        try{
+            let ret = await getNameComment(val.userId)
+            console.log(ret);
+            setNameUser(ret)
+        }
+        catch{
+            console.log('user not conenct');
+        }
+        
     }
 
     let user2 = JSON.parse(user) 
-    if(user2.userId == val.userId){
-        setEditing(true)
-        console.log(true);
+    try{
+
+        if(user2.userId == val.userId){
+            setEditing(true)
+            console.log(true);
+        }
+    }
+    catch{
+        console.log('user not connect');
     }
     get()
 

@@ -11,6 +11,8 @@ import Register from "./pages/register";
 import Venues from "./pages/venues";
 import './App.css';
 import { Data } from "./contexApi";
+import AddHal from "./pages/AddHal";
+import EditingHall from "./pages/EditingHall";
 
 
 
@@ -18,7 +20,6 @@ function App() {
   return (
     <Router>
       <Data>
-      <CustomNavbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/venues" element={<Venues />} />
@@ -26,7 +27,11 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/addHall" element={<AddHal />}/>
+        <Route path="/aditingHall" element={<EditingHall />}/>
+
       </Routes>
+      <CustomNavbar />
       <Footer />
       </Data>
     </Router>

@@ -10,6 +10,16 @@ export default function ListComment({IdVailu,editing,setEditing}) {
     const {user} = useContext(AllData)
     const [arrComment,setArrComment]= useState([])
 
+    const addComment = ()=>{
+        console.log(user);
+        if(user == null){
+            alert('אינך מחובר למערכת ')
+        }
+        else{
+            setEditing(true)
+        }
+    }
+
 
     useEffect(()=>{
         const get = async ()=>{
@@ -22,7 +32,7 @@ export default function ListComment({IdVailu,editing,setEditing}) {
     },[editing])
   return (
       <div className='commentStyle'>
-          <Card.Img  className='imgButtonComment' onClick={()=>{setEditing(true)}} variant="top" src={imgComent} />
+          <Card.Img  className='imgButtonComment' onClick={addComment} variant="top" src={imgComent} />
           
           <div style={{display:'flex',flexWrap:'wrap',flexDirection:'row'}}>
 
