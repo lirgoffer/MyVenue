@@ -12,7 +12,7 @@ const CustomNavbar = () => {
 
     const show = ()=>{
         if(showAmin){
-            return  <Nav.Link as={Link} to="/addHall">הוסף מלון</Nav.Link>
+            return  <Nav.Link as={Link} to="/addHall">הוסף אולם</Nav.Link>
         }
     }
 
