@@ -66,7 +66,7 @@ export default function HallShow({val,handleInnerClick,setShowHall}) {
                             <a href={val.linkVidioFromYouTube}>
                                 <img src={imgYoutube} style={{ width: 30, height: 30, marginRight:15 }} />
                             </a>
-                            <a href={val.linkToWaze}>
+                            <a href={val.linkToSite}>
                                 <img style={{ width: 30, height: 30 ,marginRight:15}} src={Imgwebsite} />
                             </a>
                         </Card.Body>

@@ -326,7 +326,7 @@ export const  Data = ({children})=>{
 
 
     return(
-        <AllData.Provider value={{aditingHall,hallEditing,setHallEditing,deleteHall,addNewHall,conectNew,arrShowHall,setArrShowHall,allHall,signUp,user,logIn,sendCodeToUpdatePassword,checkCode,updatePsswordServer,getComment,getNameComment,AddCommentServer}}>{children}</AllData.Provider>
+        <AllData.Provider value={{setUser,aditingHall,hallEditing,setHallEditing,deleteHall,addNewHall,conectNew,arrShowHall,setArrShowHall,allHall,signUp,user,logIn,sendCodeToUpdatePassword,checkCode,updatePsswordServer,getComment,getNameComment,AddCommentServer}}>{children}</AllData.Provider>
     )
 }
 

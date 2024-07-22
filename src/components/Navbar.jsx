@@ -4,11 +4,15 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import imgUser from '../pages/images/user.png'
 import AllData from '../contexApi'
 
+const KEYUSER = 'userLogOlam'
+
 
 const CustomNavbar = () => {
     const [userShow,setUserShow]=useState('אינך מחובר')
     const {user} = useContext(AllData)
+    const {setUser} = useContext(AllData)
     const [showAmin,setShowAmin] = useState(false)
+    const [showDisconnected,setShowDisconnected] = useState(false)
 
     const show = ()=>{
         if(showAmin){
@@ -26,12 +30,35 @@ const CustomNavbar = () => {
             }
         }
     },[user])
+
+    const showDisconnectedCheck = ()=>{
+        if(userShow != 'אינך מחובר'){
+            setShowDisconnected(true)
+        }
+    }
+
+    const disconnected = () =>{
+        localStorage.removeItem(KEYUSER)
+        setUser(null)
+        alert('התנתקת מהמערכת בהצלחה')
+        setUserShow('אינך מחובר')
+    }
     return (
-        <Navbar collapseOnSelect expand="lg" bg="light" variant="light" dir="rtl"style={{margin:0,position:'fixed',width:'100%',top:0}} >
+        <Navbar collapseOnSelect expand="lg" bg="light"  dir="rtl"style={{margin:0,position:'fixed',width:'100%',top:0,justifyContent:'space-between'}} >
             <Container style={{display:'flex',justifyContent:'space-between',padding:0,width:'100%'}}>
-            <div style={{display:'flex',alignItems:'center',flexDirection:'row',justifyContent:'space-around'}}>
+            <div style={{display:'flex',alignItems:'center',flexDirection:'row',justifyContent:'space-around',cursor:'pointer'}} onMouseEnter={showDisconnectedCheck}   onMouseLeave={() => { setShowDisconnected(false) }}            >
                 <img src={imgUser} style={{ height: 40,margin:10 }} />
                 <p style={{margin:'auto'}}>{userShow}</p>
+                {
+                    showDisconnected ?(
+                        <div onClick={disconnected}  style={{position:'absolute', top:70,background:'rgb(47, 181, 222)',color:'white',height:35,width:80,display:'flex',justifyContent:'center',alignItems:'center',borderRadius:8}}>
+                        התנתק
+                    </div>
+                    ):(
+                        <div></div>
+                    )
+                }
+
             </div> 
                 <Navbar.Brand as={Link} to="/"></Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

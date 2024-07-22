@@ -15,12 +15,12 @@ import AddHal from "./pages/AddHal";
 import EditingHall from "./pages/EditingHall";
 
 
-
 function App() {
   return (
     <Router>
       <Data>
       <Routes>
+
         <Route exact path="/" element={<Home />} />
         <Route exact path="/venues" element={<Venues />} />
         <Route path="/about" element={<About />} />

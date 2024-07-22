@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import AllData from "../contexApi";
 import imgWaze from './images/waze.png'
-import { TextField, Container, Button ,Checkbox ,FormControl,InputLabel,Select,MenuItem} from '@mui/material';
+import { TextField, Container, Button ,Checkbox ,FormControl,InputLabel,Select,MenuItem,Rating} from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
@@ -11,6 +11,7 @@ import { BorderLeft } from "@mui/icons-material";
 import imgRemove from './images/remove.png'
 import imgEditing from './images/commentAdite.png'
 import { useNavigate } from "react-router-dom";
+import Hall from "./Hall";
 
 
 export default function ListHall({setHallCh,setShowHall}) {
@@ -23,9 +24,12 @@ export default function ListHall({setHallCh,setShowHall}) {
     const [garden,setGarden]=useState(false)
     const [hall,setHall] = useState(false)
     const [kosher,setKosher] = useState(false)
-    const [guests,setGuests] = useState(0)
+    const [guests,setGuests] = useState(JSON.stringify([0]))
     const [searchValue, setSearchValue] = useState('');
     const {setHallEditing} = useContext(AllData)
+    const [arrCitys,setArrCitys] =useState([])
+    const [city,setCity] =useState('הכל')
+    const {getComment} = useContext(AllData)
 
 
     const filterGarend = (val)=>{
@@ -105,6 +109,8 @@ export default function ListHall({setHallCh,setShowHall}) {
     
     
     const showAdmin  = (venue)=>{
+        try{
+
             let user2 = JSON.parse(user)
             if(user2.Permissions == true){
                 return <>
@@ -113,12 +119,28 @@ export default function ListHall({setHallCh,setShowHall}) {
                 </>
             }
         }
+        catch{
+            console.log('not conect');
+        }
+        }
+
+
+    
 
 
     // מבצע סינון כל פעם שיש שינוי באחד מהגדרות הסינון
     useEffect(()=>{
+        let arrCityN = ['הכל']
 
-        let arr = [...allHall]
+        let arr = allHall
+
+        console.log(arr);
+
+        arr.forEach((val)=>{
+            if(arrCityN.includes(val.cityHall) == false){
+                arrCityN.push(val.cityHall) 
+            }
+        })
 
         if(garden == true || hall == true){
             arr = arr.filter((val)=> filterGarend(val) || filterHall(val))
@@ -126,24 +148,32 @@ export default function ListHall({setHallCh,setShowHall}) {
         if(kosher == true){
             arr = arr.filter((val)=> val.kosher == true)
         }
-        if(guests > 0){
-            console.log('Ok');
-            arr.forEach((val)=>{
-                if( Number(val.minNumberGuest) <= guests){
-                    console.log(true);
-                }
-                else{
-                    console.log(false);
-                }
-            })
-            arr = arr.filter((val)=> Number(val.minNumberGuest) <= guests && guests <= Number(val.maxNumberGuest))
+        if(guests != '[0]'){
+            let arrNumber = JSON.parse(guests)
+            console.log(arrNumber[0]);
+            if(arrNumber[0] != 500){
+                arr = arr.filter((val)=> Number(val.minNumberGuest) <= arrNumber[1] &&  arrNumber[0] <= Number(val.maxNumberGuest))
+            }
+            else{
+                arr = arr.filter((val)=> Number(val.maxNumberGuest) >= arrNumber[1])
+            }
+
         }
+        if(city != 'הכל' ){
+            arr = arr.filter((val)=> val.cityHall == city)
+        }
+
         arr = arr.filter((val)=> val.nameHall.indexOf(searchValue) != -1)
 
 
+
+        console.log(arrCityN);
+
+        setArrCitys([...arrCityN])
+
         setArrShowHall([...arr])
 
-    },[garden,hall,kosher,guests,searchValue])
+    },[garden,hall,kosher,guests,searchValue,city])
 
     
 
@@ -156,33 +186,16 @@ export default function ListHall({setHallCh,setShowHall}) {
           <div className="mt-4" dir="rtl" >
 
               {
-                  arrShowHall.map((venue) => (
-                      <Card className="card2" onClick={() => { setShowHall(true); setHallCh(venue) }}  >
-                          <Card.Img variant="top" src={venue.imgUrl} />
-                          <Card.Body>
-                              <Card.Title>{venue.nameHall}</Card.Title>
-                              <Card.Text>{venue.descriptionHall.slice(0, 100)}...</Card.Text>
-                          </Card.Body>
-                          <ListGroup className="list-group-flush">
-                              <ListGroup.Item>{venue.addersHall}</ListGroup.Item>
-                              {/* <ListGroup.Item>{venue.moreDetails}</ListGroup.Item> */}
-                          </ListGroup>
-                          <Card.Body dir="ltr">
-                              <a href={venue.linkToWaze}>
-                                  <img src={imgWaze} />
-                              </a>
-                              {
-                                showAdmin(venue)
-                              }
-                              {/* <Card.Link href={venue.link}>קישור לעמוד המציג את האולם</Card.Link> */}
-                          </Card.Body>
-                      </Card>
+                  arrShowHall.map(venue => (
+                    <Hall venue={venue} setShowHall={setShowHall} setHallCh={setHallCh} showAdmin={showAdmin} />
                   ))
 
-              }</div>
+              }
+              
+              </div>
 
 
-          <div style={{ width: '100%',justifyContent:'space-between',paddingLeft:30 ,position: 'fixed', top: 70, display: 'flex', flexDirection: 'row', alignItems:'center' ,borderBottomWidth: 1, height: 55, borderBottomColor: 'gray', borderBottomStyle: 'solid', paddingRight: 15 ,background:'white' }}>
+          <div className="search">
              
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                   <div>
@@ -198,21 +211,42 @@ export default function ListHall({setHallCh,setShowHall}) {
                       <Checkbox defaultChecked checked={kosher} onChange={(e) => { setKosher(e.target.checked) }} />
                   </div>
 
-                  <FormControl fullWidth style={{width:100,height:30,marginTop:7,padding:0}}>
+                  <FormControl fullWidth style={{width:110,height:30,marginTop:7,padding:0}}>
                       <InputLabel id="demo-simple-select-label">  אורחים </InputLabel>
                       <Select 
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={guests}
                           label="Age"
-                          onChange={(e)=>{setGuests(e.target.value);console.log(e.target.value);}}
+                          onChange={(e)=>{setGuests(e.target.value)}}
                           style={{height:30,margin:0,padding:0}}
                       >
-                          <MenuItem value={100}>100</MenuItem>
-                          <MenuItem value={300}>300</MenuItem>
-                          <MenuItem value={500}>500</MenuItem>
-                          <MenuItem value={0}>הכל</MenuItem>
+                          <MenuItem value={JSON.stringify([0, 100])}>0-100</MenuItem>
+                          <MenuItem value={JSON.stringify([100, 250])}>100-250</MenuItem>
+                          <MenuItem value={JSON.stringify([250, 500])}>250-500</MenuItem>
+                          <MenuItem value={JSON.stringify([500, 500])}>500+</MenuItem>
+                          <MenuItem value={JSON.stringify([0])}>הכל</MenuItem>
 
+
+                      </Select>
+                  </FormControl>
+
+                  
+                  <FormControl fullWidth style={{width:100,height:30,marginTop:7,marginRight:10,padding:0}}>
+                      <InputLabel id="demo-simple-select-label">  בחר עיר </InputLabel>
+                      <Select 
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={city}
+                          label="Age"
+                          onChange={(e)=>{setCity(e.target.value);console.log(e.target.value);}}
+                          style={{height:30,margin:0,padding:0}}
+                      >
+                          {arrCitys.map((val,index) => (
+                              <MenuItem key={index} value={val}>
+                                  {val}
+                              </MenuItem>
+                          ))}
                       </Select>
                   </FormControl>
 

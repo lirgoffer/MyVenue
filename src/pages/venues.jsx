@@ -41,7 +41,7 @@ function Venues() {
 
                 {
                     showHall ? (
-                            <HallShow val={hallCh} handleInnerClick={handleInnerClick} setShowHall={setShowHall}/>
+                        <HallShow val={hallCh} handleInnerClick={handleInnerClick} setShowHall={setShowHall}/>
                     ): (
                         <ListHall setHallCh={setHallCh} setShowHall={setShowHall}/>
                     )
