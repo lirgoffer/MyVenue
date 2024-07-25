@@ -27,7 +27,7 @@ export default function ListHall({setHallCh,setShowHall}) {
     const [guests,setGuests] = useState(JSON.stringify([0]))
     const [searchValue, setSearchValue] = useState('');
     const {setHallEditing} = useContext(AllData)
-    const [arrCitys,setArrCitys] =useState([])
+    const [arrCitys,setArrCitys] = useState([])
     const [city,setCity] =useState('הכל')
     const {getComment} = useContext(AllData)
 
@@ -114,8 +114,8 @@ export default function ListHall({setHallCh,setShowHall}) {
             let user2 = JSON.parse(user)
             if(user2.Permissions == true){
                 return <>
-                <img src={imgRemove} style={{cursor:'pointer'}} onClick={(evant)=>{checkSend(evant,venue.IdVailu)}}/>
-                <img src={imgEditing} style={{cursor:'pointer'}} alt="" onClick={(event)=>{editingHall(event,venue)}} />
+                <img src={imgRemove} style={{cursor:'pointer',height:30,margin:2}} onClick={(evant)=>{checkSend(evant,venue.IdVailu)}}/>
+                <img src={imgEditing} style={{cursor:'pointer',height:30,margin:2}} alt="" onClick={(event)=>{editingHall(event,venue)}} />
                 </>
             }
         }
@@ -124,23 +124,31 @@ export default function ListHall({setHallCh,setShowHall}) {
         }
         }
 
+    useEffect(()=>{
+        let arrCityN = []
+
+        arrShowHall.forEach((val)=>{
+            if(arrCityN.includes(val.cityHall) == false){
+                arrCityN.push(val.cityHall) 
+            }
+        })
+
+        arrCityN = arrCityN.sort()
+
+        arrCityN.unshift('הכל')
+
+        setArrCitys([...arrCityN])
+    },[arrShowHall])
 
     
 
 
     // מבצע סינון כל פעם שיש שינוי באחד מהגדרות הסינון
     useEffect(()=>{
-        let arrCityN = ['הכל']
 
-        let arr = allHall
+        let arr = [...allHall]
 
-        console.log(arr);
 
-        arr.forEach((val)=>{
-            if(arrCityN.includes(val.cityHall) == false){
-                arrCityN.push(val.cityHall) 
-            }
-        })
 
         if(garden == true || hall == true){
             arr = arr.filter((val)=> filterGarend(val) || filterHall(val))
@@ -167,9 +175,7 @@ export default function ListHall({setHallCh,setShowHall}) {
 
 
 
-        console.log(arrCityN);
 
-        setArrCitys([...arrCityN])
 
         setArrShowHall([...arr])
 
@@ -211,8 +217,8 @@ export default function ListHall({setHallCh,setShowHall}) {
                       <Checkbox defaultChecked checked={kosher} onChange={(e) => { setKosher(e.target.checked) }} />
                   </div>
 
-                  <FormControl fullWidth style={{width:110,height:30,marginTop:7,padding:0}}>
-                      <InputLabel id="demo-simple-select-label">  אורחים </InputLabel>
+                  <FormControl fullWidth style={{width:110,height:30,marginTop:7,padding:0}} >
+                      <InputLabel id="demo-simple-select-label" style={{background:'white'}}>  אורחים </InputLabel>
                       <Select 
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
@@ -233,7 +239,7 @@ export default function ListHall({setHallCh,setShowHall}) {
 
                   
                   <FormControl fullWidth style={{width:100,height:30,marginTop:7,marginRight:10,padding:0}}>
-                      <InputLabel id="demo-simple-select-label">  בחר עיר </InputLabel>
+                      <InputLabel id="demo-simple-select-label" style={{background:'white'}}>  בחר עיר </InputLabel>
                       <Select 
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"

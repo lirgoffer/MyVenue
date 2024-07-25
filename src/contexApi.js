@@ -14,6 +14,8 @@ export const  Data = ({children})=>{
     const [allHall,setAllHall] = useState([])
     const [arrShowHall,setArrShowHall] = useState([])
     const [hallEditing,setHallEditing]  = useState({})
+    const [hallConent,sethallConent] = useState()
+    const [commentEditing,setCommentEditing] =useState()
 
 
 
@@ -283,6 +285,74 @@ export const  Data = ({children})=>{
         })
     }
 
+    const conectNewHall = async (mail,nameConect,lastName,phone,mailHall)=>{
+        return await fetch(`${addresIp}/coonectToHall`,{
+            headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
+            method:'POST',
+            body:JSON.stringify({
+                mail,
+                nameConect,
+                lastName,
+                phone,
+                mailHall
+            })
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            return data
+        })
+        .catch((e)=>{
+            console.log(e);
+        })
+    }
+
+    const deleteComment = async (commentId, userId) => {
+        try {
+            const response = await fetch(`${addresIp}/delete-comment/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId })
+            });
+    
+            const data = await response.json();
+            if (response.ok) {
+                alert(data.message);
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the comment');
+        }
+    };
+
+    const editingComment = async ( rating,text,eventDay,eventYear,unusualtime,upgrade,timeAdd,userId,IdOpinion)=>{
+        return await fetch(`${addresIp}/editingComment`,{
+            headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
+            method:'POST',
+            body:JSON.stringify({
+                rating,
+                text,
+                eventDay,
+                eventYear,
+                unusualtime,
+                upgrade,
+                timeAdd,
+                userId,
+                IdOpinion
+            })
+        })
+        .then(res=>res.json())
+        .then((data)=>{
+            return data
+        })
+        .catch((e)=>{
+            console.log(e);
+        })
+    }
+
 
 
 
@@ -307,6 +377,7 @@ export const  Data = ({children})=>{
     })
     .then(res=>res.json())
     .then(data=>{
+        console.log(data);
         return data
     })
     .catch((e)=>{
@@ -326,7 +397,7 @@ export const  Data = ({children})=>{
 
 
     return(
-        <AllData.Provider value={{setUser,aditingHall,hallEditing,setHallEditing,deleteHall,addNewHall,conectNew,arrShowHall,setArrShowHall,allHall,signUp,user,logIn,sendCodeToUpdatePassword,checkCode,updatePsswordServer,getComment,getNameComment,AddCommentServer}}>{children}</AllData.Provider>
+        <AllData.Provider value={{editingComment,deleteComment,conectNewHall,hallConent,sethallConent,setUser,aditingHall,hallEditing,setHallEditing,deleteHall,addNewHall,conectNew,arrShowHall,setArrShowHall,allHall,signUp,user,logIn,sendCodeToUpdatePassword,checkCode,updatePsswordServer,getComment,getNameComment,AddCommentServer}}>{children}</AllData.Provider>
     )
 }
 

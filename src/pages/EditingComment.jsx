@@ -7,16 +7,20 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // import { render } from 'react-dom'
 import ReactStars from 'react-stars'
 import AllData from '../contexApi';
+import dayjs from 'dayjs'; 
+import { useNavigate } from 'react-router-dom';
 
 
-export default function AddComment({val,setEditing}) {
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [unusualtime,setUnusualtime] = useState('')
-    const [reating,setRating] = useState(5)
-    const [upgrade,setUpgrade] =useState(false)
-    const [text,setText] = useState('')
+export default function EditingComment() {
+    const navigate = useNavigate()
+    const commentEditing = JSON.parse(sessionStorage.getItem('comment')) 
+    const [selectedDate, setSelectedDate] = useState( dayjs(commentEditing.addTime) );
+    const [unusualtime,setUnusualtime] = useState(commentEditing.unusualtime)
+    const [reating,setRating] = useState(commentEditing.rating)
+    const [upgrade,setUpgrade] =useState(commentEditing.upgrade)
+    const [text,setText] = useState(commentEditing.text)
     const {user}= useContext(AllData)
-    const {AddCommentServer}= useContext(AllData)
+    const {editingComment} = useContext(AllData)
 
     const ratingChanged = (newRating) => {
         setRating(newRating)
@@ -37,10 +41,11 @@ export default function AddComment({val,setEditing}) {
         }
         else{
             let user2 = JSON.parse(user)
-            let ret = await AddCommentServer(user2.userId,reating,text,selectedDate.getDay(),selectedDate.getFullYear(),unusualtime,upgrade,selectedDate,val.IdVailu)
-            console.log(ret);
+            let date= new Date(selectedDate)
+            let ret = await editingComment(reating,text,date.getDay(),date.getFullYear(),unusualtime,upgrade,selectedDate,user2.userId,commentEditing.IdOpinion)
             if(ret == true){
-                setEditing(false)
+                navigate('/venues')
+
             }
             else{
                 alert('משהו השתבש נסה שוב')
@@ -50,15 +55,14 @@ export default function AddComment({val,setEditing}) {
       }
 
   return (
-    <div className='addComment'>
-            <div className='addCommentMaine'>
-
+    <div className='addComment' style={{paddingTop:100}}>
+            <div className='addCommentMaine' dir='rtl'>
             <p style={{fontSize:25,padding:20,fontWeight:'600'}}>הוסף תגובה</p>
             
 
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={['DatePicker']} >
-                      <DatePicker onChange={handleDateChange} />
+                      <DatePicker value={selectedDate} onChange={handleDateChange} />
                   </DemoContainer>
               </LocalizationProvider>
 

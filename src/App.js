@@ -13,6 +13,8 @@ import './App.css';
 import { Data } from "./contexApi";
 import AddHal from "./pages/AddHal";
 import EditingHall from "./pages/EditingHall";
+import ConectToHall from "./pages/ConectToHall";
+import EditingComment from './pages/EditingComment'
 
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/addHall" element={<AddHal />}/>
         <Route path="/aditingHall" element={<EditingHall />}/>
+        <Route path="/conectToHall" element={<ConectToHall/>}/>
+        <Route path="/editingComment" element={<EditingComment/>}/>
 
       </Routes>
       <CustomNavbar />

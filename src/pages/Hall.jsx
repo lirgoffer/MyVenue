@@ -9,6 +9,7 @@ import AllData from "../contexApi";
 export default function Hall({venue,setShowHall,setHallCh,showAdmin}) {
     const [rating,setRating] = useState(1)
     const {getComment} = useContext(AllData)
+    const [sumComent,setSumComment] = useState(0)
 
     useEffect(()=>{
         const ratingSum = async (IdVailu) => {
@@ -26,33 +27,35 @@ export default function Hall({venue,setShowHall,setHallCh,showAdmin}) {
             else {
                 setRating(2)
             }
+            setSumComment(sum)
 
         }
         ratingSum(venue.IdVailu)
     },[])
   return (
       <Card className="card2" onClick={() => { setShowHall(true); setHallCh(venue) }}  >
-          <Card.Img variant="top" src={venue.imgUrl} />
+          <Card.Img variant="top" src={venue.imgUrl}  style={{maxHeight:180}}/>
           <Card.Body>
               <div style={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
                   <Card.Title>{venue.nameHall}</Card.Title>
-                  <Rating
-                      name="read-only"
-                      value={rating}
-                      readOnly
-                  //   style={{ position: 'absolute', bottom: 50, left: 10 }}
-
-                  />
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Rating
+                          name="read-only"
+                          value={rating}
+                          readOnly
+                      />
+                      <span style={{ marginLeft: '10px' }}>{`(${sumComent})`}</span>
+                  </div>
               </div>
               <Card.Text>{venue.descriptionHall.slice(0, 100)}...</Card.Text>
           </Card.Body>
           <ListGroup className="list-group-flush">
-              <ListGroup.Item>{venue.addersHall}</ListGroup.Item>
+              <ListGroup.Item>{venue.cityHall}</ListGroup.Item>
               {/* <ListGroup.Item>{venue.moreDetails}</ListGroup.Item> */}
           </ListGroup>
           <Card.Body dir="ltr">
               <a href={venue.linkToWaze}>
-                  <img src={imgWaze} />
+                  <img src={imgWaze} style={{height:30,cursor:'pointer',margin:2}}/>
               </a>
               {
                   showAdmin(venue)

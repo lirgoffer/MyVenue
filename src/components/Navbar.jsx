@@ -14,11 +14,6 @@ const CustomNavbar = () => {
     const [showAmin,setShowAmin] = useState(false)
     const [showDisconnected,setShowDisconnected] = useState(false)
 
-    const show = ()=>{
-        if(showAmin){
-            return  <Nav.Link as={Link} to="/addHall">הוסף אולם</Nav.Link>
-        }
-    }
 
 
     useEffect(()=>{
@@ -28,6 +23,12 @@ const CustomNavbar = () => {
             if(user2.Permissions ==true){
                 setShowAmin(true)
             }
+            else{
+                setShowAmin(false)
+            }
+        }
+        else{
+            setShowAmin(false)
         }
     },[user])
 
@@ -51,7 +52,7 @@ const CustomNavbar = () => {
                 <p style={{margin:'auto'}}>{userShow}</p>
                 {
                     showDisconnected ?(
-                        <div onClick={disconnected}  style={{position:'absolute', top:70,background:'rgb(47, 181, 222)',color:'white',height:35,width:80,display:'flex',justifyContent:'center',alignItems:'center',borderRadius:8}}>
+                        <div onClick={disconnected}  style={{position:'absolute', top:70,background:'black',color:'white',height:35,width:80,display:'flex',justifyContent:'center',alignItems:'center',borderRadius:8}}>
                         התנתק
                     </div>
                     ):(
@@ -66,12 +67,28 @@ const CustomNavbar = () => {
                     <Nav className="me-auto text-right">
                         <Nav.Link as={Link} to="/">דף הבית</Nav.Link>
                         <Nav.Link as={Link} to="/venues">אולמות האירועים</Nav.Link>
-                        <Nav.Link as={Link} to="/login">התחברות</Nav.Link>
-                        <Nav.Link as={Link} to="/register">הרשמה</Nav.Link>
+                        {
+                            user == null ?(
+                                <>
+                                <Nav.Link as={Link} to="/login">התחברות</Nav.Link>
+                                <Nav.Link as={Link} to="/register">הרשמה</Nav.Link>
+                                </>
+
+                            ):(
+                                <>
+                                </>
+                            )
+                        }
                         <Nav.Link as={Link} to="/about">קצת עלינו</Nav.Link>
                         <Nav.Link as={Link} to="/contact">צור קשר</Nav.Link>
+
                         {
-                            show()
+                            showAmin ? (
+                                <Nav.Link as={Link} to="/addHall">הוסף אולם</Nav.Link>
+                            ):(
+                                <>
+                                </>
+                            )
                         }
                     </Nav>
                 </Navbar.Collapse>

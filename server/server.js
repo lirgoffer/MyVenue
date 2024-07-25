@@ -87,8 +87,8 @@ const collectionOpinion = mongoose.model('opinion', schemaOpinion);
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'ranan97531@gmail.com',
-        pass: 'azkhraqcilpsmxqw'
+        user: 'Lirg177@gmail.com',
+        pass: 'wjiesutzcxjgwwxq'
     }
 });
 
@@ -166,7 +166,7 @@ app.post('/getCodeToSebd', async (req,res)=>{
 
             try{
                 let mailOptions = {
-                    from: 'ranan97531@gmail.com',
+                    from: 'Lirg177@gmail.com',
                     to: ret.maile,
                     subject: 'קיבלת קוד לאיפוס סיסמה',
                     text: `הכנס את הקוד הזה ${code}`
@@ -291,8 +291,8 @@ app.post('/conectToAdmin', async (req,res)=>{
     }
 
     let mailOptions = {
-        from: 'ranan97531@gmail.com',
-        to: 'ranan97531@gmail.com',
+        from: 'Lirg177@gmail.com',
+        to: 'Lirg177@gmail.com',
         subject: 'לקוח חדש',
         text: `שם : ${ret.nameConect} ${ret.lastName} \n פאלפון : ${ret.phone} \n מייל : ${ret.mail}`
     };
@@ -408,6 +408,95 @@ app.post('/editingHall', async (req,res)=>{
 
 })
 
+app.post('/coonectToHall', async (req,res)=>{
+    let ret =  {
+        mail: req.body.mail,
+        nameConect: req.body.nameConect,
+        lastName:req.body.lastName,
+        phone:req.body.phone,
+        mailHall:req.body.mailHall
+    }
+
+    let mailOptions = {
+        from: 'Lirg177@gmail.com',
+        to: ret.mailHall,
+        subject: 'לקוח חדש',
+        text: `שם : ${ret.nameConect} ${ret.lastName} \n פאלפון : ${ret.phone} \n מייל : ${ret.mail}`
+    };
+
+    try{
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+                res.json(false)
+            }
+            else {
+                console.log('Email sent: ' + info.response);
+                res.json(true)
+            }
+        });
+    }
+    catch{
+        res.json(false)
+    }
+
+
+})
+
+
+app.delete('/delete-comment/:id', async (req, res) => {
+    const { userId } = req.body; // Assuming userId is sent in the request body
+    const { id } = req.params; // Comment ID to be deleted
+
+    try {
+        // Fetch the user from the database
+        const user = await collectionUser.findOne({ userId });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the user has administrative permissions
+        if (!user.Permissions) {
+            return res.status(403).json({ message: 'Access denied' });
+        }
+
+        // Delete the comment
+        const deletedComment = await collectionOpinion.findOneAndDelete({ IdOpinion: id });
+        if (!deletedComment) {
+            return res.status(404).json({ message: 'Comment not found' });
+        }
+
+        res.status(200).json({ message: 'Comment deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+});
+
+app.post('/editingComment', async (req,res)=>{
+    ret = {
+        rating: req.body.rating,
+        text:req.body.text,
+        eventDay: req.body.eventDay,
+        eventYear: req.body.eventYear,
+        unusualtime: req.body.unusualtime,
+        upgrade: req.body.upgrade,
+        timeAdd: req.body.timeAdd,
+        modified_last: new Date(),
+    }
+
+    let userIdCheck = req.body.userId
+    let IdOpinionCheck = req.body.IdOpinion
+
+    let check = await collectionOpinion.updateOne({userId:userIdCheck,IdOpinion:IdOpinionCheck},{$set:ret})
+
+    if(check.acknowledged == true){
+        res.json(true)
+    }
+    else{
+        res.json(false)
+    }
+})
 
 
 

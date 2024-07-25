@@ -121,9 +121,9 @@ function Login() {
 
                 <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center' dir="rtl">
 
-                    <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 75%)' }}>
+                    <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'black',fontSize:40,fontWeight:'bold',textAlign:'right',paddingBottom:100}}>
                         MyVenue <br />
-                        <span style={{ color: 'hsl(218, 81%, 75%)' }}>כיף שחזרתם אלינו!</span>
+                        <span style={{ color: 'black' }}>כיף שחזרתם אלינו!</span>
                     </h1>
 
 
@@ -136,28 +136,27 @@ function Login() {
                     !showGetPassword ? (
 
                         <div className='signInCo'>
-                            <h3 style={{ marginRight: 8 }}>התחבר</h3>
+                            <h3 style={{ marginRight: 8,marginBottom:6,paddingBottom:0 }}>התחבר</h3>
                             <TextField value={maile} onChange={(e) => { setMaile(e.target.value) }} id="outlined-size-small" label="הכנס מייל" variant="filled" inputProps={{ dir: 'rtl' }}
                                 sx={{
                                     '& .MuiInputLabel-root': {
                                         left: 'auto',
                                         right: 15,
                                         transformOrigin: 'top right',
-                                    },
-                                    marginTop: 3
-                                }}
+                                    },                                }}
                             />
 
-                            <TextField value={password} onChange={(e) => { setPassword(e.target.value) }} id="outlined-size-small" label="הכנס סיסמה " variant="filled" inputProps={{ dir: 'rtl' }}
+                            <TextField value={password} onChange={(e) => { setPassword(e.target.value) }} id="outlined-size-small" label="הכנס סיסמה " type='password' variant="filled" inputProps={{ dir: 'rtl' }}
                                 sx={{
                                     '& .MuiInputLabel-root': {
                                         left: 'auto',
                                         right: 15,
                                         transformOrigin: 'top right',
                                     },
-                                    marginTop: 8
+                                    marginTop: 4
                                 }}
                             />
+                            <p style={{margin:0,padding:0}}>** הסיסמה צריכה להכיל לפחות 6 תווים שמתוכם ספרה אחת ואות אחת **</p>
                             <p onClick={() => { setShowGetPassword(true) }} style={{ color: 'rgb(68, 208, 255)', cursor: 'pointer' }}>שכחתי סיסמה</p>
 
                             <div style={{ display: 'flex', justifyContent: 'space-around', padding: 35 }}>

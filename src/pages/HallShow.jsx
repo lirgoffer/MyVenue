@@ -10,12 +10,21 @@ import AllData from '../contexApi';
 import ListComment from './ListComment';
 import AddComment from './AddComment';
 import imgBac from './images/arrow.png'
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import PeopleIcon from '@mui/icons-material/People';
+
+
 
 
 export default function HallShow({val,handleInnerClick,setShowHall}) {
+    const navigate = useNavigate()
     const {getComment} = useContext(AllData)
     const {user} = useContext(AllData)
     const [editing,setEditing] = useState(false)
+    const {sethallConent} = useContext(AllData)
+
     const sendkosher = ()=>{
         if(val.kosher == true){
             return 'כן'
@@ -40,12 +49,12 @@ export default function HallShow({val,handleInnerClick,setShowHall}) {
                         <h3 className='titlePageHall'>{val.nameHall} </h3>
                         <p>{val.descriptionHall} </p>
                         <div className='properti' >
-                            <h4 className='titleProperty'>מיקום <img className='imgProperti' src={imgLoction} /></h4>
+                            <h4 className='titleProperty'>מיקום <LocationOnIcon/></h4>
                             <p>{val.addersHall}</p>
                         </div>
       
                         <div className='properti' >
-                            <h4 className='titleProperty'>כמות <img className='imgProperti' src={imgUsers} /></h4>
+                            <h4 className='titleProperty'>כמות <PeopleIcon/> </h4>
                             <p>{val.minNumberGuest}- {val.maxNumberGuest} אורחים</p>
                         </div>
       
@@ -70,6 +79,8 @@ export default function HallShow({val,handleInnerClick,setShowHall}) {
                                 <img style={{ width: 30, height: 30 ,marginRight:15}} src={Imgwebsite} />
                             </a>
                         </Card.Body>
+                        <Button variant='contained' onClick={()=>{navigate('/conectToHall');sethallConent(val)}}>צור קשר</Button>
+
       
                     </div>
       
