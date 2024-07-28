@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect } from "react";
 
 const AllData = createContext()
 
-const addresIp = process.env.API_URL || 'http://localhost:80';
+const addresIp = process.env.API_URL || 'http://localhost:3001';
 
 const KEYUSER = 'userLogOlam'
 

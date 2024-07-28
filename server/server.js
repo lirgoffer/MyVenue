@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3001;
 
 
 const urlMongoose = 'mongodb+srv://lirg177:q3ovlV6MzAoVTpJL@cluster0.x2dftog.mongodb.net/hall';
