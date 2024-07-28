@@ -55,10 +55,10 @@ const schemaUser = new mongoose.Schema({
     username: String,
     password: String,
     maile: String,
-    codePssword:String
+    codePssword: String
 });
 
-const schemaOpinion = new mongoose.Schema({ 
+const schemaOpinion = new mongoose.Schema({
     IdOpinion: String,
     userId: String,
     rating: Number,
@@ -96,7 +96,7 @@ let transporter = nodemailer.createTransport({
 app.get('/allHall', async (req, res) => {
     try {
         let arrHall = await collectionHall.find();
-        res.json( arrHall );
+        res.json(arrHall);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -108,19 +108,19 @@ app.post('/newUser', async (req, res) => {
         userId: generateUUID(),
         Permissions: false, // user / manager
         username: req.body.username,
-        password:  req.body.password,
-        maile:  req.body.maile,
-        codePssword:''
+        password: req.body.password,
+        maile: req.body.maile,
+        codePssword: ''
     }
-    
-    let checkUser = await collectionUser.findOne({maile:ret.maile})
 
-    if(checkUser == null){
+    let checkUser = await collectionUser.findOne({ maile: ret.maile })
+
+    if (checkUser == null) {
         await collectionUser.insertMany(ret)
-        let user = await collectionUser.findOne({maile:ret.maile})
+        let user = await collectionUser.findOne({ maile: ret.maile })
         res.json(user)
     }
-    else(
+    else (
         res.json(false)
     )
 
@@ -128,50 +128,50 @@ app.post('/newUser', async (req, res) => {
 });
 
 
-app.post('/logIn', async (req,res)=>{
+app.post('/logIn', async (req, res) => {
 
     let ret = {
-        password:  req.body.password,
-        maile:  req.body.maile,
+        password: req.body.password,
+        maile: req.body.maile,
     }
 
-    let checkUser = await collectionUser.findOne({maile:ret.maile,password:ret.password})
+    let checkUser = await collectionUser.findOne({ maile: ret.maile, password: ret.password })
 
-    if(checkUser == null){
+    if (checkUser == null) {
         res.json(false)
     }
-    else{
+    else {
         res.json(checkUser)
     }
 })
 
 
 // update password user
-app.post('/getCodeToSebd', async (req,res)=>{
+app.post('/getCodeToSebd', async (req, res) => {
     let ret = {
-        maile : req.body.maile
+        maile: req.body.maile
     }
 
-    
-    let checkUser = await collectionUser.findOne({maile:ret.maile})
 
-    if(checkUser == false){
+    let checkUser = await collectionUser.findOne({ maile: ret.maile })
+
+    if (checkUser == false) {
         return false
     }
-    else{
-        let code = Math.floor(Math.random() * (9999-1111)) + 1111
-        let check = await collectionUser.updateOne({maile:ret.maile},{$set:{codePssword:code}})
+    else {
+        let code = Math.floor(Math.random() * (9999 - 1111)) + 1111
+        let check = await collectionUser.updateOne({ maile: ret.maile }, { $set: { codePssword: code } })
 
-        if(check.modifiedCount == 1){
+        if (check.modifiedCount == 1) {
 
-            try{
+            try {
                 let mailOptions = {
                     from: 'Lirg177@gmail.com',
                     to: ret.maile,
                     subject: 'קיבלת קוד לאיפוס סיסמה',
                     text: `הכנס את הקוד הזה ${code}`
                 };
-                
+
                 transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
                         console.log(error);
@@ -182,10 +182,10 @@ app.post('/getCodeToSebd', async (req,res)=>{
                 });
                 res.json(true)
             } catch {
-               res.json(false) 
+                res.json(false)
             }
         }
-        else{
+        else {
             res.json(false)
         }
 
@@ -193,37 +193,37 @@ app.post('/getCodeToSebd', async (req,res)=>{
     }
 })
 
-app.post('/checkCodePasswrd',async (req,res)=>{
-    ret={
-        codePssword:req.body.codePssword,
-        maile:req.body.maile
+app.post('/checkCodePasswrd', async (req, res) => {
+    ret = {
+        codePssword: req.body.codePssword,
+        maile: req.body.maile
     }
 
-    let checkCode =  await collectionUser.findOne({maile:ret.maile,codePssword:ret.codePssword})
+    let checkCode = await collectionUser.findOne({ maile: ret.maile, codePssword: ret.codePssword })
 
-    if(checkCode == null){
+    if (checkCode == null) {
         res.json(false)
     }
-    else(
+    else (
         res.json(true)
     )
 })
 
 
-app.post('/updatePssword',async (req,res)=>{
+app.post('/updatePssword', async (req, res) => {
     let ret = {
         password: req.body.password,
         maile: req.body.maile,
-        codePssword:req.body.codePssword
+        codePssword: req.body.codePssword
     }
 
-    let checkCode =  await collectionUser.findOne({maile:ret.maile,codePssword:ret.codePssword})
+    let checkCode = await collectionUser.findOne({ maile: ret.maile, codePssword: ret.codePssword })
 
-    if(checkCode == null){
+    if (checkCode == null) {
         res.json(false)
     }
-    else{
-        checkCode = await collectionUser.updateOne({maile:ret.maile},{$set:{password:ret.password}})
+    else {
+        checkCode = await collectionUser.updateOne({ maile: ret.maile }, { $set: { password: ret.password } })
         res.json(true)
     }
 
@@ -231,37 +231,37 @@ app.post('/updatePssword',async (req,res)=>{
 
 
 
-app.post('/getCommentHall', async (req,res)=>{
+app.post('/getCommentHall', async (req, res) => {
     let ret = {
         IdVailu: req.body.IdVailu
     }
-    let arrComment = await collectionOpinion.find({IdVailu:ret.IdVailu})
+    let arrComment = await collectionOpinion.find({ IdVailu: ret.IdVailu })
     res.json(arrComment)
 })
 
 
-app.post('/getNameUserComment', async (req,res)=>{
-    let ret ={
+app.post('/getNameUserComment', async (req, res) => {
+    let ret = {
         userId: req.body.userId
     }
-    let user = await collectionUser.findOne({userId:ret.userId})
-    if(user != null){
-        res.json({nameUser:user.username})
+    let user = await collectionUser.findOne({ userId: ret.userId })
+    if (user != null) {
+        res.json({ nameUser: user.username })
     }
-    else{
-        res.json({name:'anonimy'})
+    else {
+        res.json({ name: 'anonimy' })
     }
 })
 
 
-app.post('/addNewComment', async (req,res)=>{
-    try{
+app.post('/addNewComment', async (req, res) => {
+    try {
         ret = {
             IdOpinion: generateUUID(),
             userId: req.body.userId,
             rating: req.body.rating,
-            text:req.body.text,
-            pricePortion:  '',
+            text: req.body.text,
+            pricePortion: '',
             eventDay: req.body.eventDay,
             eventYear: req.body.eventYear,
             unusualtime: req.body.unusualtime,
@@ -275,19 +275,19 @@ app.post('/addNewComment', async (req,res)=>{
 
         res.json(true)
     }
-    catch{
+    catch {
         res.json(false)
     }
 
 })
 
 
-app.post('/conectToAdmin', async (req,res)=>{
-    let ret =  {
+app.post('/conectToAdmin', async (req, res) => {
+    let ret = {
         mail: req.body.mail,
         nameConect: req.body.nameConect,
-        lastName:req.body.lastName,
-        phone:req.body.phone
+        lastName: req.body.lastName,
+        phone: req.body.phone
     }
 
     let mailOptions = {
@@ -297,7 +297,7 @@ app.post('/conectToAdmin', async (req,res)=>{
         text: `שם : ${ret.nameConect} ${ret.lastName} \n פאלפון : ${ret.phone} \n מייל : ${ret.mail}`
     };
 
-    try{
+    try {
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
@@ -310,7 +310,7 @@ app.post('/conectToAdmin', async (req,res)=>{
             }
         });
     }
-    catch{
+    catch {
         res.json(false)
     }
 
@@ -318,7 +318,7 @@ app.post('/conectToAdmin', async (req,res)=>{
 
 })
 
-app.post('/addNewHall', async (req,res)=>{
+app.post('/addNewHall', async (req, res) => {
     let ret = {
         IdVailu: generateUUID(),
         nameHall: req.body.nameHall,
@@ -338,41 +338,41 @@ app.post('/addNewHall', async (req,res)=>{
 
     let userIdCheck = req.body.userId
 
-    let checkUser = await collectionUser.findOne({userId:userIdCheck})
-    if(checkUser.Permissions == true){
-        try{
+    let checkUser = await collectionUser.findOne({ userId: userIdCheck })
+    if (checkUser.Permissions == true) {
+        try {
             await collectionHall.insertMany(ret)
             res.json(true)
         }
-        catch{
+        catch {
             res.json(false)
         }
     }
-    else{
+    else {
         res.json('למשתמש שלך אין הרשאה')
     }
 })
 
-app.post('/deleteHall', async (req,res)=>{
+app.post('/deleteHall', async (req, res) => {
     let IdVailuCheck = req.body.IdVailu
     let userIdCheck = req.body.userId
 
-    let checkUser = await collectionUser.findOne({userId:userIdCheck})
-    if(checkUser.Permissions == true){
-        try{
-            await collectionHall.deleteOne({IdVailu:IdVailuCheck})
+    let checkUser = await collectionUser.findOne({ userId: userIdCheck })
+    if (checkUser.Permissions == true) {
+        try {
+            await collectionHall.deleteOne({ IdVailu: IdVailuCheck })
             res.json(true)
         }
-        catch{
+        catch {
             res.json(false)
         }
     }
-    else{
+    else {
         res.json('למשתמש שלך אין הרשאה')
     }
 })
 
-app.post('/editingHall', async (req,res)=>{
+app.post('/editingHall', async (req, res) => {
     let ret = {
         nameHall: req.body.nameHall,
         addersHall: req.body.addersHall,
@@ -392,29 +392,29 @@ app.post('/editingHall', async (req,res)=>{
     let userIdCheck = req.body.userId
     let IdVailuCheck = req.body.IdVailu
 
-    let checkUser = await collectionUser.findOne({userId:userIdCheck})
-    if(checkUser.Permissions == true){
-        try{
-            await collectionHall.updateOne({IdVailu:IdVailuCheck},{$set:{...ret}})
+    let checkUser = await collectionUser.findOne({ userId: userIdCheck })
+    if (checkUser.Permissions == true) {
+        try {
+            await collectionHall.updateOne({ IdVailu: IdVailuCheck }, { $set: { ...ret } })
             res.json(true)
         }
-        catch{
+        catch {
             res.json(false)
         }
     }
-    else{
+    else {
         res.json('אין לך הרשאות משתמש')
     }
 
 })
 
-app.post('/coonectToHall', async (req,res)=>{
-    let ret =  {
+app.post('/coonectToHall', async (req, res) => {
+    let ret = {
         mail: req.body.mail,
         nameConect: req.body.nameConect,
-        lastName:req.body.lastName,
-        phone:req.body.phone,
-        mailHall:req.body.mailHall
+        lastName: req.body.lastName,
+        phone: req.body.phone,
+        mailHall: req.body.mailHall
     }
 
     let mailOptions = {
@@ -424,7 +424,7 @@ app.post('/coonectToHall', async (req,res)=>{
         text: `שם : ${ret.nameConect} ${ret.lastName} \n פאלפון : ${ret.phone} \n מייל : ${ret.mail}`
     };
 
-    try{
+    try {
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
@@ -437,7 +437,7 @@ app.post('/coonectToHall', async (req,res)=>{
             }
         });
     }
-    catch{
+    catch {
         res.json(false)
     }
 
@@ -473,10 +473,10 @@ app.delete('/delete-comment/:id', async (req, res) => {
     }
 });
 
-app.post('/editingComment', async (req,res)=>{
+app.post('/editingComment', async (req, res) => {
     ret = {
         rating: req.body.rating,
-        text:req.body.text,
+        text: req.body.text,
         eventDay: req.body.eventDay,
         eventYear: req.body.eventYear,
         unusualtime: req.body.unusualtime,
@@ -488,12 +488,12 @@ app.post('/editingComment', async (req,res)=>{
     let userIdCheck = req.body.userId
     let IdOpinionCheck = req.body.IdOpinion
 
-    let check = await collectionOpinion.updateOne({userId:userIdCheck,IdOpinion:IdOpinionCheck},{$set:ret})
+    let check = await collectionOpinion.updateOne({ userId: userIdCheck, IdOpinion: IdOpinionCheck }, { $set: ret })
 
-    if(check.acknowledged == true){
+    if (check.acknowledged == true) {
         res.json(true)
     }
-    else{
+    else {
         res.json(false)
     }
 })
@@ -501,26 +501,26 @@ app.post('/editingComment', async (req,res)=>{
 
 
 const addComment = async () => {
-    try{
+    try {
         ret = {
             IdOpinion: generateUUID(),
             userId: '7d6480a8-c9e1-43ac-bb31-7d49b8458bf0',
             rating: 6,
-            text:'היה אירוע מעולה מאוד  נהננו ממליצים בחום',
-            pricePortion:  '100',
+            text: 'היה אירוע מעולה מאוד  נהננו ממליצים בחום',
+            pricePortion: '100',
             eventDay: 'שני',
             eventYear: "2024",
-            unusualtime:'',
+            unusualtime: '',
             upgrade: false,
             timeAdd: new Date(),
             modified_last: new Date(),
             IdVailu: '819bbb1c-946d-410d-87be-16f869f76f56'
         }
-    
+
         let check = await collectionOpinion.insertMany(ret)
         console.log(check);
     }
-    catch{
+    catch {
         console.log('not');
     }
 }
@@ -553,12 +553,12 @@ const addUser = async () => {
         userId: generateUUID(),
         Permissions: false, // user / manager
         username: 'raanan',
-        password:  '25240RA',
-        maile:  'ranan97531@gmail.com',
+        password: '25240RA',
+        maile: 'ranan97531@gmail.com',
 
     }
-    
-    let checkUser = await collectionUser.findOne({maile:ret.maile})
+
+    let checkUser = await collectionUser.findOne({ maile: ret.maile })
 
     console.log(checkUser);
 
@@ -593,6 +593,6 @@ const addHall = async () => {
 
 // addHall(); // הפעלת הפונקציה להוספת אולם חדש
 
-app.listen(80, () => {
-    console.log('Server is running on port 80');
+app.listen(3001, () => {
+    console.log('Server is running on port 3001');
 });
