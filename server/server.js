@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const port = process.env.PORT || 3001;
 
 
 const urlMongoose = 'mongodb+srv://lirg177:q3ovlV6MzAoVTpJL@cluster0.x2dftog.mongodb.net/hall';
@@ -593,6 +594,6 @@ const addHall = async () => {
 
 // addHall(); // הפעלת הפונקציה להוספת אולם חדש
 
-app.listen(3001, () => {
-    console.log('Server is running on port 3001');
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server is running on port ${port}`);
 });
