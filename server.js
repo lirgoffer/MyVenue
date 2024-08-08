@@ -15,6 +15,13 @@ app.use(bodyParser.json());
 // Enable CORS
 app.use(cors());
 
+// app.use(express.static('./reactjs/build'));
+app.use(express.static(path.join(__dirname, './reactjs/build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, './reactjs/build', 'index.html'));
+  });
+
 mongoose.connect(urlMongoose, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('db is on');
@@ -93,11 +100,12 @@ let transporter = nodemailer.createTransport({
 });
 
 
-app.get('/allHall', async (req, res) => {
+app.post('/allHall', async (req, res) => {
     try {
         let arrHall = await collectionHall.find();
-        res.json( arrHall );
+        res.json(arrHall);
     } catch (err) {
+        console.log('ppp');
         res.status(500).json({ error: err.message });
     }
 });
@@ -136,7 +144,7 @@ app.post('/logIn', async (req,res)=>{
     }
 
     let checkUser = await collectionUser.findOne({maile:ret.maile,password:ret.password})
-
+    console.log(checkUser);
     if(checkUser == null){
         res.json(false)
     }
@@ -593,6 +601,6 @@ const addHall = async () => {
 
 // addHall(); // הפעלת הפונקציה להוספת אולם חדש
 
-app.listen(80, () => {
+app.listen( 80, () => {
     console.log('Server is running on port 80');
 });

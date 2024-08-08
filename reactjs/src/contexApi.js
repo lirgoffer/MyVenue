@@ -21,13 +21,19 @@ export const  Data = ({children})=>{
 
 
 // עידכון בתחילת הרצת האצר 
-    const updateStart = ()=>{
+    const updateStart = async ()=>{
         let user = localStorage.getItem(KEYUSER)
         setUser(user)
-        
-        fetch(`${addresIp}/allHall`)
+
+        await fetch(`/allHall`,{
+            headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
+            method:'POST',
+            body:JSON.stringify({
+                
+            })
+        })
         .then(res=>res.json())
-        .then(data=>{
+        .then((data)=>{
             console.log(data);
             setAllHall(data)
             setArrShowHall(data)
@@ -35,12 +41,15 @@ export const  Data = ({children})=>{
         .catch(err=>{
             console.log(err);
         })
+
+        
+    
     }
 
 
 // פונקציות בתחברות והרשמה 
     const signUp = async ( username,password,maile,)=>{
-        return await fetch(`${addresIp}/newUser`,{
+        return await fetch(`/newUser`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -65,7 +74,7 @@ export const  Data = ({children})=>{
     }
 
     const logIn = async (password,maile)=>{
-        return await fetch(`${addresIp}/logIn`,{
+        return await fetch(`/logIn`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -97,7 +106,7 @@ export const  Data = ({children})=>{
 
 // פונקציות עדכון סיסמה 
     const sendCodeToUpdatePassword =  async(maile) =>{
-        return await fetch(`${addresIp}/getCodeToSebd`,{
+        return await fetch(`/getCodeToSebd`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -114,7 +123,7 @@ export const  Data = ({children})=>{
     }
 
     const checkCode = async (codePssword,maile) =>{
-        return await fetch(`${addresIp}/checkCodePasswrd`,{
+        return await fetch(`/checkCodePasswrd`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -132,7 +141,7 @@ export const  Data = ({children})=>{
     }
 
     const updatePsswordServer = async (password,maile,codePssword) =>{
-        return await fetch(`${addresIp}/updatePssword`,{
+        return await fetch(`/updatePssword`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -153,7 +162,7 @@ export const  Data = ({children})=>{
 
 // קבלת כל התגובות של האולם 
     const getComment = async (IdVailu)=>{
-        return await fetch(`${addresIp}/getCommentHall`,{
+        return await fetch(`/getCommentHall`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -168,7 +177,7 @@ export const  Data = ({children})=>{
     }
 
     const getNameComment = async (userId) =>{
-        return await fetch(`${addresIp}/getNameUserComment`,{
+        return await fetch(`/getNameUserComment`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -185,7 +194,7 @@ export const  Data = ({children})=>{
     }
 
     const conectNew = async (mail,nameConect,lastName,phone)=>{
-        return await fetch(`${addresIp}/conectToAdmin`,{
+        return await fetch(`/conectToAdmin`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -205,7 +214,7 @@ export const  Data = ({children})=>{
     }
 
     const addNewHall = async (nameHall,addersHall,cityHall,typeHall,descriptionHall,minNumberGuest,maxNumberGuest,kosher,maile,linkVidioFromYouTube,linkToWaze,imgUrl,linkToSite,userId)=>{
-        return await fetch(`${addresIp}/addNewHall`,{
+        return await fetch(`/addNewHall`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -237,7 +246,7 @@ export const  Data = ({children})=>{
     }
 
     const deleteHall = async (IdVailu,userId)=>{
-        return await fetch(`${addresIp}/deleteHall`,{
+        return await fetch(`/deleteHall`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -255,7 +264,7 @@ export const  Data = ({children})=>{
     }
 
     const aditingHall = async (nameHall,addersHall,cityHall,typeHall,descriptionHall,minNumberGuest,maxNumberGuest,kosher,maile,linkVidioFromYouTube,linkToWaze,imgUrl,linkToSite,userId,IdVailu)=>{
-        return await fetch(`${addresIp}/editingHall`,{
+        return await fetch(`/editingHall`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -286,7 +295,7 @@ export const  Data = ({children})=>{
     }
 
     const conectNewHall = async (mail,nameConect,lastName,phone,mailHall)=>{
-        return await fetch(`${addresIp}/coonectToHall`,{
+        return await fetch(`/coonectToHall`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -308,7 +317,7 @@ export const  Data = ({children})=>{
 
     const deleteComment = async (commentId, userId) => {
         try {
-            const response = await fetch(`${addresIp}/delete-comment/${commentId}`, {
+            const response = await fetch(`/delete-comment/${commentId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -329,7 +338,7 @@ export const  Data = ({children})=>{
     };
 
     const editingComment = async ( rating,text,eventDay,eventYear,unusualtime,upgrade,timeAdd,userId,IdOpinion)=>{
-        return await fetch(`${addresIp}/editingComment`,{
+        return await fetch(`/editingComment`,{
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
             method:'POST',
             body:JSON.stringify({
@@ -360,7 +369,7 @@ export const  Data = ({children})=>{
 // הןספת תגובה 
 
    const AddCommentServer = async (userId,rating,text,eventDay,eventYear,unusualtime,upgrade,timeAdd,IdVailu)=>{
-    return await fetch(`${addresIp}/addNewComment`,{
+    return await fetch(`/addNewComment`,{
         headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
         method:'POST',
         body:JSON.stringify({
