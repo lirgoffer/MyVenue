@@ -464,6 +464,7 @@ app.delete('/delete-comment/:id', async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        
         // Check if the user has administrative permissions
         if (!user.Permissions) {
             return res.status(403).json({ message: 'Access denied' });
@@ -496,7 +497,15 @@ app.post('/editingComment', async (req,res)=>{
     let userIdCheck = req.body.userId
     let IdOpinionCheck = req.body.IdOpinion
 
-    let check = await collectionOpinion.updateOne({userId:userIdCheck,IdOpinion:IdOpinionCheck},{$set:ret})
+    let checkAdmine = await collectionUser.findOne({userId:userIdCheck})
+    let check = ''
+    if(checkAdmine.Permissions == true){
+        check = await collectionOpinion.updateOne({IdOpinion:IdOpinionCheck},{$set:ret})
+    }
+    else{
+        check = await collectionOpinion.updateOne({userId:userIdCheck,IdOpinion:IdOpinionCheck},{$set:ret})
+    }
+
 
     if(check.acknowledged == true){
         res.json(true)
@@ -555,22 +564,6 @@ const addComment = async () => {
 
 
 
-
-const addUser = async () => {
-    ret = {
-        userId: generateUUID(),
-        Permissions: false, // user / manager
-        username: 'raanan',
-        password:  '25240RA',
-        maile:  'ranan97531@gmail.com',
-
-    }
-    
-    let checkUser = await collectionUser.findOne({maile:ret.maile})
-
-    console.log(checkUser);
-
-}
 
 
 
